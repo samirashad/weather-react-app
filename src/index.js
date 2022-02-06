@@ -13,7 +13,10 @@ function App() {
       <Weather />
       <footer>
         This project was coded by Samira shad and is{" "}
-        <a href="https://github.com/samirashad/weather-react-app">
+        <a
+          href="https://github.com/samirashad/weather-react-app"
+          target="_blank"
+        >
           open sourced on GitHub
         </a>{" "}
       </footer>

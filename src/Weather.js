@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./Styles/Weather.css";
 import axios from "axios";
+import FormatDate from "./FormatDate";
+
 export default function CurrentWeather() {
   let [ready, setReady] = useState(false);
   let [weatherData, setWeatherData] = useState({});
@@ -13,6 +15,7 @@ export default function CurrentWeather() {
       wind: Math.round(response.data.wind.speed),
       iconUrl: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
       description: response.data.weather[0].description,
+      date: new Date(response.data.dt * 1000),
     });
     setReady(true);
   }
@@ -45,13 +48,15 @@ export default function CurrentWeather() {
         <div className="row">
           <div className="col-4">
             <div className="cityName">{weatherData.city}</div>
-            <div>Tuesday 12:23</div>
+            <div>
+              <FormatDate date={weatherData.date} />
+            </div>
             <span className="currentDegree">{weatherData.temperature}</span>
             <span className="degrees">
-              <a href=" " className="active">
+              <a href="/" className="active">
                 °C{" "}
               </a>
-              |<a href=" "> F</a>
+              |<a href="/"> F</a>
             </span>
           </div>
           <div className="col-6">
