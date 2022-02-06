@@ -10,7 +10,7 @@ ReactDOM.render(App(), rootElement);
 function App() {
   return (
     <div className="App">
-      <Weather />
+      <Weather city="Mashhad" />
       <footer>
         This project was coded by Samira shad and is{" "}
         <a
