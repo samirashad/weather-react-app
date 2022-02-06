@@ -1,0 +1,12 @@
+body {
+  font-family: "Times New Roman", Times, serif;
+}
+.App {
+  margin: 20px auto;
+  max-width: 750px;
+}
+
+footer {
+  font-size: 11px;
+  font-weight: bold;
+}
