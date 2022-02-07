@@ -7,21 +7,30 @@ export default function Weather(props) {
   let [ready, setReady] = useState(false);
   let [weatherData, setWeatherData] = useState({});
   let [city, setCity] = useState(props.city);
+
   function handleResponse(response) {
     setWeatherData({
       temperature: Math.round(response.data.main.temp),
       city: response.data.name,
       humidity: response.data.main.humidity,
       wind: Math.round(response.data.wind.speed),
-      iconUrl: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
+      icon: response.data.weather[0].icon,
       description: response.data.weather[0].description,
       date: new Date(response.data.dt * 1000),
+      fahrenhait: Math.round((response.data.main.temp * 9) / 5 + 32),
     });
     setReady(true);
   }
+
+  function search() {
+    const apiKey = "0cade312aa440618836af6e6fd05e7ad";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(handleResponse);
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
-    setReady(false);
+    search();
   }
   if (ready) {
     return (
@@ -54,9 +63,7 @@ export default function Weather(props) {
       </div>
     );
   } else {
-    const apiKey = "0cade312aa440618836af6e6fd05e7ad";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(handleResponse);
+    search();
     return "loading..";
   }
 }

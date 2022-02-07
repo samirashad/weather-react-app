@@ -25,9 +25,13 @@ p.specification {
   margin-bottom: 0;
 }
 
-.description {
+.Weather .description {
   font-weight: 600;
   text-transform: capitalize;
+  position: relative;
+  top: -20px;
+  margin-left: 20px;
+  font-size: 25px;
 }
 
 .cityName {
@@ -46,4 +50,8 @@ p.specification {
 .degrees a:hover {
   text-decoration: none;
   cursor: default;
+}
+
+.Weather canvas {
+  margin-top: 25px;
 }
