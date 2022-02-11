@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import FormatDate from "./FormatDate";
 import WeatherIcon from "./WeatherIcon";
 
 export default function WeatherInfo(props) {
-  let [isCelsius, setIsCelsius] = useState(true);
   function convertCelsius(event) {
     event.preventDefault();
-    setIsCelsius(true);
+    props.setIsCelsius(true);
   }
+
   function convertFahrenhait(event) {
     event.preventDefault();
-    setIsCelsius(false);
+    props.setIsCelsius(false);
   }
 
   return (
@@ -21,12 +21,12 @@ export default function WeatherInfo(props) {
           <FormatDate date={props.data.date} />
         </div>
         <span className="currentDegree">
-          {isCelsius ? props.data.temperature : props.data.fahrenhait}
+          {props.isCelsius ? props.data.temperature : props.data.fahrenhait}
         </span>
         <span className="degrees">
           <a
             href="/"
-            className={isCelsius ? "active" : ""}
+            className={props.isCelsius ? "active" : ""}
             onClick={convertCelsius}
           >
             °C{" "}
@@ -34,7 +34,7 @@ export default function WeatherInfo(props) {
           |
           <a
             href="/"
-            className={isCelsius ? "" : "active"}
+            className={props.isCelsius ? "" : "active"}
             onClick={convertFahrenhait}
           >
             {" "}
@@ -44,7 +44,7 @@ export default function WeatherInfo(props) {
       </div>
       <div className="col-6">
         <div className="description">
-          <WeatherIcon icon={props.data.icon} />
+          <WeatherIcon icon={props.data.icon} size={64} />
           <span className=" description">{props.data.description}</span>
         </div>
         <p className="specification">

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Styles/Weather.css";
 import axios from "axios";
 import WeatherInfo from "./WeatherInfo";
+import WaetherForecast from "./WeatherForecast";
 
 export default function Weather(props) {
+  let [isCelsius, setIsCelsius] = useState(true);
   let [ready, setReady] = useState(false);
   let [weatherData, setWeatherData] = useState({});
   let [city, setCity] = useState(props.city);
@@ -11,6 +13,7 @@ export default function Weather(props) {
   function handleResponse(response) {
     setWeatherData({
       temperature: Math.round(response.data.main.temp),
+      coordinate: response.data.coord,
       city: response.data.name,
       humidity: response.data.main.humidity,
       wind: Math.round(response.data.wind.speed),
@@ -21,9 +24,12 @@ export default function Weather(props) {
     });
     setReady(true);
   }
+  useEffect(() => {
+    setIsCelsius(true);
+  }, [city]);
 
   function search() {
-    const apiKey = "0cade312aa440618836af6e6fd05e7ad";
+    const apiKey = "062d11614d7d2c7e64b4e3d2e314e320";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(handleResponse);
   }
@@ -31,6 +37,15 @@ export default function Weather(props) {
   function handleSubmit(event) {
     event.preventDefault();
     search();
+  }
+  function handlePositon(position) {
+    const apiKey = "062d11614d7d2c7e64b4e3d2e314e320";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(handleResponse);
+  }
+  function getCoordinate(event) {
+    event.preventDefault();
+    navigator.geolocation.getCurrentPosition(handlePositon);
   }
   if (ready) {
     return (
@@ -55,11 +70,21 @@ export default function Weather(props) {
               />
             </div>
             <div className="col-4">
-              <button className="btn btn-success">Current location</button>
+              <button className="btn btn-success" onClick={getCoordinate}>
+                Current location
+              </button>
             </div>
           </div>
         </form>
-        <WeatherInfo data={weatherData} />
+        <WeatherInfo
+          data={weatherData}
+          isCelsius={isCelsius}
+          setIsCelsius={setIsCelsius}
+        />
+        <WaetherForecast
+          coordinate={weatherData.coordinate}
+          isCelsius={isCelsius}
+        />
       </div>
     );
   } else {
